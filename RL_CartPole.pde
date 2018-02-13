@@ -52,11 +52,11 @@ void setup() {
   // Initialize the bar
   PVector barEnd = new PVector(width/2, 150);
   bar = new Bar(barEnd, cart.pos, 20);
-  
+
   fill(127);
   stroke(0);
   strokeWeight(2);
-  
+
   //force the initial values (to debug and issue with toxilibs)
   bar.tail.y = 150;
   bar.head.y = cartPos.y;
@@ -65,10 +65,10 @@ void setup() {
 void draw() {
   //Run this loop to reset the game
   if ((currentFrame == oneCycle) || (reset == true)) {
-    
+
     //increment the number of games done
     cyclesDone++;
-    
+
     //compare the current score with high score
     if (highScore < rewards) {
       highScore = rewards;
@@ -76,7 +76,7 @@ void draw() {
       bestW2 = w2;
       bestBias = bias;
     }
-    
+
     // Print details
     println("Round " + cyclesDone);
     println("Rewards gained = " + rewards);
@@ -86,7 +86,7 @@ void draw() {
     println("best Bias = " + bestBias);
     if (explore == 1) println("Mode = explore");
     else println("Mode = exploit");
-    
+
     //Reset everything
     currentFrame = 0;
     rewards = 0;
@@ -102,16 +102,14 @@ void draw() {
 
     //assign new weights (depending on the nature of the agent)
     if (explore == 1) {
-      w1 = random(-1, 1);
-      w2 = random(-1, 1);
-      bias = random(-1000, 1000);
+      randomRL();
     } else {
       w1 = bestW1;
       w2 = bestW2;
       bias = bestBias;
     }
   }
-  
+
   //white background if agent is exploring. Grey if performing
   if (explore == 1)
     background(255);
@@ -133,7 +131,7 @@ void draw() {
   //ACT
   if (sumParameters < 0) action = 0;
   else action = 1;
-  
+
   if (action == 0)
     cart.pos.x += 2;
   else
@@ -156,4 +154,10 @@ void keyPressed() {
   if (key == 's') {
     explore *= -1;
   }
+}
+
+void randomRL() {
+  w1 = random(-1, 1);
+  w2 = random(-1, 1);
+  bias = random(-1000, 1000);
 }
